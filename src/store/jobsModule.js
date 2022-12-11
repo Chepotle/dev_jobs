@@ -23,7 +23,7 @@ export const jobsModule = {
 	actions: {
 		async getJobs({ commit }) {
 			try {
-				let response = await axios.get("/data.json");
+				let response = await axios.get("https://github.com/Chepotle/dev_jobs/blob/gh-pages/data.json");
 				commit("setJobsData", response.data);
 
 			} catch (e) {
