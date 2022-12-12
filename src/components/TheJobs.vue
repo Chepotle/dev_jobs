@@ -1,5 +1,13 @@
 <template>
     <div class="wrapper" :class="{ wrapper_dark: theme }">
+        <div class="loading" v-if="loading" :class="{ loading_dark: theme }">
+            <div class="loading__text">Loading</div>
+            <img
+                class="loading__gif"
+                src="@/assets/desktop/loading.svg"
+                alt=""
+            />
+        </div>
         <div
             class="modal"
             :class="{ modal_dark: theme }"
@@ -111,7 +119,7 @@
                     </button>
                 </div>
             </div>
-            <div class="jobs" v-if="jobsData">
+            <div class="jobs" v-if="!loading">
                 <div
                     class="jobs__item"
                     :class="{ jobs__item_dark: theme }"
@@ -142,7 +150,9 @@
                     </div>
                 </div>
             </div>
-            <button @click="loadMore" class="load">Load More</button>
+            <button v-if="!loading" @click="loadMore" class="load">
+                Load More
+            </button>
         </div>
     </div>
 </template>
@@ -164,6 +174,7 @@ export default {
             titleSearch: null,
             locationSearch: null,
             modal: false,
+            loading: true,
         };
     },
     methods: {
@@ -259,6 +270,7 @@ export default {
         (async () => {
             await this.getJobs();
             this.setJobsShow();
+            this.loading = false;
         })();
     },
     mounted() {
@@ -271,6 +283,26 @@ export default {
 <style lang="scss" scoped>
 @import "@/scss/mixins.scss";
 @import "@/scss/colors.scss";
+
+.loading {
+    &_dark {
+        .loading__text {
+            color: #fff;
+        }
+    }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    &__text {
+        font-size: 24px;
+        color: $DarkBlue;
+        font-weight: bold;
+    }
+}
 
 .modal {
     &_dark {
@@ -567,7 +599,6 @@ export default {
     background-color: $Midnight;
 }
 .wrapper {
-    position: relative;
     padding-bottom: 100px;
     z-index: 1;
     &_dark {

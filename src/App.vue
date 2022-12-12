@@ -16,6 +16,7 @@ body {
 .wrapper {
     background-color: $LightGrey;
     min-height: 100vh;
+    position: relative;
 }
 
 .container {

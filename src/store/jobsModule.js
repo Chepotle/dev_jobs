@@ -3,7 +3,6 @@ import axios from "axios";
 export const jobsModule = {
 	state: () => ({
 		jobsData: null,
-		jobItem: null,
 		clientWidth: null,
 	}),
 	getters: {
@@ -13,9 +12,6 @@ export const jobsModule = {
 		setJobsData(state, jobsData) {
 			state.jobsData = jobsData;
 		},
-		setJobItem(state, jobItem) {
-			state.jobItem = jobItem;
-		},
 		getClientWidth(state) {
 			state.clientWidth = document.documentElement.clientWidth;
 		},
@@ -23,8 +19,8 @@ export const jobsModule = {
 	actions: {
 		async getJobs({ commit }) {
 			try {
-				let response = await axios.get("https://github.com/Chepotle/dev_jobs/blob/gh-pages/data.json");
-				commit("setJobsData", response.data);
+				let response = await axios.get("https://api.jsonbin.io/v3/b/63970b762d0e0021081ac21e", { headers: { 'X-Master-Key': '$2b$10$7CwsFbKb.BLW1kd8jKK7teW5dEX4qa9NxaWIayCWwQWirol8YktBu' } });
+				commit("setJobsData", response.data.record);
 
 			} catch (e) {
 				console.log(e);

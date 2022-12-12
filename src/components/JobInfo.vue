@@ -1,5 +1,13 @@
 <template>
     <div class="wrapper" :class="{ wrapper_dark: theme }">
+        <div class="loading" v-if="!jobItem" :class="{ loading_dark: theme }">
+            <div class="loading__text">Loading</div>
+            <img
+                class="loading__gif"
+                src="@/assets/desktop/loading.svg"
+                alt=""
+            />
+        </div>
         <the-header />
         <div class="container" :class="{ container_dark: theme }">
             <div class="job" v-if="jobItem">
@@ -10,7 +18,7 @@
                             backgroundColor: jobItem.logoBackground,
                         }"
                     >
-                        <img :src="jobItem.logo" alt="" />
+                        <img :src="'.' + jobItem.logo" alt="" />
                     </div>
                     <div class="title__block">
                         <div class="">
@@ -124,6 +132,7 @@ export default {
     },
     data() {
         return {
+            jobItem: null,
             jobId: this.$route.params.id - 1,
         };
     },
@@ -138,14 +147,13 @@ export default {
     computed: {
         ...mapState({
             jobsData: (state) => state.jobs.jobsData,
-            jobItem: (state) => state.jobs.jobItem,
             theme: (state) => state.theme.theme,
         }),
     },
     created() {
         (async () => {
             await this.getJobs();
-            this.setJobItem(this.jobsData[this.jobId]);
+            this.jobItem = this.jobsData[this.jobId];
         })();
     },
 };
@@ -154,6 +162,26 @@ export default {
 <style lang="scss" scoped>
 @import "@/scss/mixins.scss";
 @import "@/scss/colors.scss";
+
+.loading {
+    &_dark {
+        .loading__text {
+            color: #fff;
+        }
+    }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    &__text {
+        font-size: 24px;
+        color: $DarkBlue;
+        font-weight: bold;
+    }
+}
 
 .job {
     padding-bottom: 80px;
